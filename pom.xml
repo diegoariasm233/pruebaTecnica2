@@ -18,7 +18,6 @@
 	<properties>
 		<java.version>17</java.version>
 		<parent.version>${version}</parent.version>
-		<org.mapstruct.version>1.6.3</org.mapstruct.version>
 	</properties>
 
 	<dependencyManagement>
