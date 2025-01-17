@@ -4,7 +4,6 @@ import co.com.ecommerce.interfaces.PricesAdapterInterface;
 import co.com.ecommerce.model.Brand;
 import co.com.ecommerce.model.Prices;
 import co.com.ecommerce.model.ProductPriceResponse;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -30,17 +29,9 @@ class ProductPriceServiceTest {
     @InjectMocks
     private ProductPriceService productPriceService;
 
-
-    private AutoCloseable closeable;
-
     @BeforeEach
     void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        closeable.close();
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
