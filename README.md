@@ -32,6 +32,14 @@ This project follows the **Hexagonal Architecture** pattern, which allows for a 
 
 This will start the application, and the H2 database will be initialized with the preconfigured data defined in the data.sql file.
 
+# Running Tests
+
+If you want to run the tests, you can do so with the following command
+    
+    mvn test
+
+This will execute all the unit and integration tests for the application.
+
 # Access to the H2 Console
 You can access the H2 web console to inspect the database at:
 
