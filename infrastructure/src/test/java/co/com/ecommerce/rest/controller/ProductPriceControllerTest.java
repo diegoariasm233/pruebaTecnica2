@@ -17,6 +17,7 @@ import java.math.RoundingMode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -116,6 +117,21 @@ class ProductPriceControllerTest {
         assertTrue(response.getBody().contains("\"brandId\":\"Failed to convert property value of type 'java.lang.String'"));
         assertTrue(response.getBody().contains("\"applicationDate\":\"Application Date must be in the format 'YYYY-MM-DDTHH:mm:ss'."));
     }
+
+
+    @Test
+    void testGetPriceForProduct_Invalid2Parameters() {
+        ResponseEntity<String> response = this.restTemplate
+                .getForEntity("http://localhost:" + port + url +
+                                "?applicationDate=2021-06-1621:00:00&productId=35455&brandId=1a",
+                        String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertTrue(response.getBody().contains("\"error\":\"Validation Error\""));
+        assertFalse(response.getBody().contains("\"productId\":\"Failed to convert property value of type 'java.lang.String'"));
+        assertTrue(response.getBody().contains("\"brandId\":\"Failed to convert property value of type 'java.lang.String'"));
+        assertTrue(response.getBody().contains("\"applicationDate\":\"Application Date must be in the format 'YYYY-MM-DDTHH:mm:ss'."));
+    }
+
 
 
 }
