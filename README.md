@@ -56,7 +56,7 @@ http://localhost:8080/h2-console
 
 The `productPrice` endpoint retrieves the price of a product based on productId, brandId, and application date.
 
-### 1. Endpoint: Check Price
+### 1. Endpoint: Product Price
 
 **URL:** `http://localhost:8080/api/v1/product-prices`  
 **Method:** `GET`  
