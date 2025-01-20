@@ -1,10 +1,11 @@
 package co.com.ecommerce.service;
 
-import co.com.ecommerce.interfaces.PricesAdapterInterface;
-import co.com.ecommerce.model.ProductPriceResponse;
+import co.com.ecommerce.external.PricesAdapterInterface;
+import co.com.ecommerce.model.Prices;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Optional;
 
 @Service
@@ -17,12 +18,13 @@ public class ProductPriceService {
     }
 
 
-    public Optional<ProductPriceResponse> getPriceForProduct(LocalDateTime applicationDate,
+    public Optional<Prices> getPriceForProduct(LocalDateTime applicationDate,
                                                              Long productId,
                                                              Long brandId){
-        return pricesAdapterInterface.findPriceByDateAndProductIdAndBrandId(applicationDate, productId, brandId)
-                .map(prices -> new ProductPriceResponse(prices.getProductId(), prices.getBrand().getBrandId(),
-                        prices.getPriceList(),
-                        prices.getStartDate(), prices.getEndDate(), prices.getPrice()));
+
+        return pricesAdapterInterface.findPriceByProductIdAndBrandId(productId, brandId)
+                .stream()
+                .filter(price -> !price.getStartDate().isAfter(applicationDate) && !price.getEndDate().isBefore(applicationDate))
+                .max(Comparator.comparingInt(Prices::getPriority));
     }
 }

@@ -50,3 +50,31 @@ http://localhost:8080/h2-console
  - JDBC URL: jdbc:h2:mem:testdb
  - Username: sa
  - Password: (empty)
+
+
+## Consuming GET Endpoint: Product Price
+
+The `productPrice` endpoint retrieves the price of a product based on productId, brandId, and application date.
+
+### 1. Endpoint: Check Price
+
+**URL:** `http://localhost:8080/api/v1/product-prices`  
+**Method:** `GET`  
+**Query Parameters:**
+- `productId` (required): The ID of the product.
+- `brandId` (required): The ID of the brand.
+- `applicationDate` (required): The application date in `YYYY-MM-DDTHH:mm:ss` format.
+
+**Example Request:**
+ `curl -X GET "http://localhost:8080/api/v1/product-prices?applicationDate=2020-06-14T16:00:00&productId=35455&brandId=1" -H "Accept: application/json"`
+
+Response: 
+```json
+{
+    "productId": 35455,
+    "brandId": 1,
+    "priceList": 2,
+    "startDate": "2020-06-14T15:00:00",
+    "endDate": "2020-06-14T18:30:00",
+    "price": 25.45
+}

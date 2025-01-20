@@ -1,4 +1,4 @@
-package co.com.ecommerce.model;
+package co.com.ecommerce.rest.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

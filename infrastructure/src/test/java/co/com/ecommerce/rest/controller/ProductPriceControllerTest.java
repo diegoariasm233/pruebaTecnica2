@@ -1,6 +1,6 @@
 package co.com.ecommerce.rest.controller;
 
-import co.com.ecommerce.model.ProductPriceResponse;
+import co.com.ecommerce.rest.model.ProductPriceResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +16,7 @@ import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -35,7 +35,7 @@ class ProductPriceControllerTest {
         BigDecimal assertPrice = BigDecimal.valueOf(35.50).setScale(2, RoundingMode.HALF_UP);
         ProductPriceResponse response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?date=2020-06-14T10:00:00&productId=35455&brandId=1",
+                                "?applicationDate=2020-06-14T10:00:00&productId=35455&brandId=1",
                 ProductPriceResponse.class).getBody();
 
         assertNotNull(response);
@@ -47,7 +47,7 @@ class ProductPriceControllerTest {
     void testGetPriceForProduct_PriceFound16HrsDay14() {
         ProductPriceResponse response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?date=2020-06-14T16:00:00&productId=35455&brandId=1",
+                                "?applicationDate=2020-06-14T16:00:00&productId=35455&brandId=1",
                         ProductPriceResponse.class).getBody();
 
         assertNotNull(response);
@@ -60,7 +60,7 @@ class ProductPriceControllerTest {
         BigDecimal assertPrice = BigDecimal.valueOf(35.50).setScale(2, RoundingMode.HALF_UP);
         ProductPriceResponse response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?date=2020-06-14T21:00:00&productId=35455&brandId=1",
+                                "?applicationDate=2020-06-14T21:00:00&productId=35455&brandId=1",
                         ProductPriceResponse.class).getBody();
 
         assertNotNull(response);
@@ -73,7 +73,7 @@ class ProductPriceControllerTest {
         BigDecimal assertPrice = BigDecimal.valueOf(30.50).setScale(2, RoundingMode.HALF_UP);
         ProductPriceResponse response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?date=2020-06-15T10:00:00&productId=35455&brandId=1",
+                                "?applicationDate=2020-06-15T10:00:00&productId=35455&brandId=1",
                         ProductPriceResponse.class).getBody();
 
         assertNotNull(response);
@@ -85,7 +85,7 @@ class ProductPriceControllerTest {
     void testGetPriceForProduct_PriceFound21HrsDay16() {
         ProductPriceResponse response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?date=2020-06-16T21:00:00&productId=35455&brandId=1",
+                                "?applicationDate=2020-06-16T21:00:00&productId=35455&brandId=1",
                         ProductPriceResponse.class).getBody();
 
         assertNotNull(response);
@@ -96,12 +96,26 @@ class ProductPriceControllerTest {
 
     @Test
     void testGetPriceForProduct_PriceNotFound21HrsDay16Ano21() {
-        ResponseEntity<ProductPriceResponse> response = this.restTemplate
+        ResponseEntity<String> response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?date=2021-06-16T21:00:00&productId=35455&brandId=1",
-                        ProductPriceResponse.class);
+                                "?applicationDate=2021-06-16T21:00:00&productId=35455&brandId=1",
+                        String.class);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-
+        assertTrue(response.getBody().contains("\"message\":\"No price found for the given parameters."));
     }
+
+    @Test
+    void testGetPriceForProduct_InvalidParameters() {
+        ResponseEntity<String> response = this.restTemplate
+                .getForEntity("http://localhost:" + port + url +
+                                "?applicationDate=2021-06-1621:00:00&productId=35455a&brandId=1a",
+                        String.class);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertTrue(response.getBody().contains("\"error\":\"Validation Error\""));
+        assertTrue(response.getBody().contains("\"productId\":\"Failed to convert property value of type 'java.lang.String'"));
+        assertTrue(response.getBody().contains("\"brandId\":\"Failed to convert property value of type 'java.lang.String'"));
+        assertTrue(response.getBody().contains("\"applicationDate\":\"Application Date must be in the format 'YYYY-MM-DDTHH:mm:ss'."));
+    }
+
 
 }

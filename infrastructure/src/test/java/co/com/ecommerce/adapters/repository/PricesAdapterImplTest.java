@@ -5,13 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -24,23 +18,22 @@ class PricesAdapterImplTest {
 
     @Test
     void testFindPriceByDateAndProductIdAndBrandId_ReturnsPrice() {
-        Optional<Prices> result = pricesAdapterImpl
-                .findPriceByDateAndProductIdAndBrandId(LocalDateTime
-                                .of(2020, 6, 14, 16, 0 , 0),
-                        35455L, 1L);
+        List<Prices> result = pricesAdapterImpl
+                .findPriceByProductIdAndBrandId(35455L, 1L);
+        assertFalse(result.isEmpty());
+        assertTrue(result.stream()
+                .allMatch(price ->
+                        price.getProductId().equals(35455L) && price.getBrand().getBrandId().equals(1L)
+                )
+        );
 
-        assertTrue(result.isPresent());
-        assertEquals(35455L, result.get().getProductId());
-        assertEquals(BigDecimal.valueOf(25.45).setScale(2, RoundingMode.HALF_UP), result.get().getPrice());
     }
 
 
     @Test
     void testFindPriceByDateAndProductIdAndBrandId_ReturnsEmpty_WhenNoPriceFound() {
-        Optional<Prices> result = pricesAdapterImpl
-                .findPriceByDateAndProductIdAndBrandId(LocalDateTime
-                                .of(2021, 6, 14, 16, 0 , 0),
-                        25L, 1L);
-        assertFalse(result.isPresent());
+        List<Prices> result = pricesAdapterImpl
+                .findPriceByProductIdAndBrandId(25L, 1L);
+        assertTrue(result.isEmpty());
     }
 }
