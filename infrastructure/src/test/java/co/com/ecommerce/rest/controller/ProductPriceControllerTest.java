@@ -109,13 +109,13 @@ class ProductPriceControllerTest {
     void testGetPriceForProduct_InvalidParameters() {
         ResponseEntity<String> response = this.restTemplate
                 .getForEntity("http://localhost:" + port + url +
-                                "?applicationDate=2021-06-1621:00:00&productId=35455a&brandId=1a",
+                                "?applicationDate=&productId=35455a&brandId=1a",
                         String.class);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         assertTrue(response.getBody().contains("\"error\":\"Validation Error\""));
         assertTrue(response.getBody().contains("\"productId\":\"Failed to convert property value of type 'java.lang.String'"));
         assertTrue(response.getBody().contains("\"brandId\":\"Failed to convert property value of type 'java.lang.String'"));
-        assertTrue(response.getBody().contains("\"applicationDate\":\"Failed to convert property value of type"));
+        assertTrue(response.getBody().contains("\"applicationDate\":\"Application Date cannot be null."));
     }
 
 
