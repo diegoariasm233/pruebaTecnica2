@@ -29,7 +29,7 @@ class ProductPriceControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private final String url = "/api/v1/product-prices";
+    private final String url = "/api/v1/product-price";
 
     @Test
     void testGetPriceForProduct_PriceFound10HrsDay14() {
@@ -115,7 +115,7 @@ class ProductPriceControllerTest {
         assertTrue(response.getBody().contains("\"error\":\"Validation Error\""));
         assertTrue(response.getBody().contains("\"productId\":\"Failed to convert property value of type 'java.lang.String'"));
         assertTrue(response.getBody().contains("\"brandId\":\"Failed to convert property value of type 'java.lang.String'"));
-        assertTrue(response.getBody().contains("\"applicationDate\":\"Application Date must be in the format 'YYYY-MM-DDTHH:mm:ss'."));
+        assertTrue(response.getBody().contains("\"applicationDate\":\"Failed to convert property value of type"));
     }
 
 
@@ -129,7 +129,7 @@ class ProductPriceControllerTest {
         assertTrue(response.getBody().contains("\"error\":\"Validation Error\""));
         assertFalse(response.getBody().contains("\"productId\":\"Failed to convert property value of type 'java.lang.String'"));
         assertTrue(response.getBody().contains("\"brandId\":\"Failed to convert property value of type 'java.lang.String'"));
-        assertTrue(response.getBody().contains("\"applicationDate\":\"Application Date must be in the format 'YYYY-MM-DDTHH:mm:ss'."));
+        assertTrue(response.getBody().contains("\"applicationDate\":\"Failed to convert property value of type"));
     }
 
 

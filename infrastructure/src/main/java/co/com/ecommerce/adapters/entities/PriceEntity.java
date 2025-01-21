@@ -1,6 +1,6 @@
 package co.com.ecommerce.adapters.entities;
 
-import co.com.ecommerce.model.Prices;
+import co.com.ecommerce.model.Price;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "PRICE")
-public class PricesEntity {
+public class PriceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,8 +45,8 @@ public class PricesEntity {
     @Column(name = "curr", nullable = false, length = 3)
     private String currency;
 
-    public Prices toDomainModel() {
-        return new Prices(id, brand.toDomainModel(), startDate, endDate, priceList, productId,
+    public Price toDomainModel() {
+        return new Price(id, brand.toDomainModel(), startDate, endDate, priceList, productId,
                 priority, price, currency);
     }
 

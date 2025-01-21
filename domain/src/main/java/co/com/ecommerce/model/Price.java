@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class Prices {
+public class Price {
 
     private Long id;
     private Brand brand;

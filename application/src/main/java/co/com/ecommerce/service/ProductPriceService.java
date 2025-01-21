@@ -1,7 +1,7 @@
 package co.com.ecommerce.service;
 
-import co.com.ecommerce.external.PricesAdapterInterface;
-import co.com.ecommerce.model.Prices;
+import co.com.ecommerce.external.PriceAdapterInterface;
+import co.com.ecommerce.model.Price;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,20 +11,20 @@ import java.util.Optional;
 @Service
 public class ProductPriceService {
 
-    private final PricesAdapterInterface pricesAdapterInterface;
+    private final PriceAdapterInterface priceAdapterInterface;
 
-    public ProductPriceService(PricesAdapterInterface pricesAdapterInterface) {
-        this.pricesAdapterInterface = pricesAdapterInterface;
+    public ProductPriceService(PriceAdapterInterface priceAdapterInterface) {
+        this.priceAdapterInterface = priceAdapterInterface;
     }
 
 
-    public Optional<Prices> getPriceForProduct(LocalDateTime applicationDate,
-                                                             Long productId,
-                                                             Long brandId){
+    public Optional<Price> getPriceForProduct(LocalDateTime applicationDate,
+                                              Long productId,
+                                              Long brandId){
 
-        return pricesAdapterInterface.findPriceByProductIdAndBrandId(productId, brandId)
+        return priceAdapterInterface.findPriceByProductIdAndBrandIdAndApplicationDate(applicationDate,
+                        productId, brandId)
                 .stream()
-                .filter(price -> !price.getStartDate().isAfter(applicationDate) && !price.getEndDate().isBefore(applicationDate))
-                .max(Comparator.comparingInt(Prices::getPriority));
+                .max(Comparator.comparingInt(Price::getPriority));
     }
 }

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.com.ecommerce</groupId>
-	<artifactId>prices</artifactId>
+	<artifactId>price</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>prices</name>
+	<name>price</name>
 	<description>Prueba Tecnica de Precios</description>
 
 	<properties>

@@ -58,7 +58,7 @@ The `productPrice` endpoint retrieves the price of a product based on productId,
 
 ### 1. Endpoint: Product Price
 
-**URL:** `http://localhost:8080/api/v1/product-prices`  
+**URL:** `http://localhost:8080/api/v1/product-price`  
 **Method:** `GET`  
 **Query Parameters:**
 - `productId` (required): The ID of the product.
@@ -66,7 +66,7 @@ The `productPrice` endpoint retrieves the price of a product based on productId,
 - `applicationDate` (required): The application date in `YYYY-MM-DDTHH:mm:ss` format.
 
 **Example Request:**
- `curl -X GET "http://localhost:8080/api/v1/product-prices?applicationDate=2020-06-14T16:00:00&productId=35455&brandId=1" -H "Accept: application/json"`
+ `curl -X GET "http://localhost:8080/api/v1/product-price?applicationDate=2020-06-14T16:00:00&productId=35455&brandId=1" -H "Accept: application/json"`
 
 Response: 
 ```json

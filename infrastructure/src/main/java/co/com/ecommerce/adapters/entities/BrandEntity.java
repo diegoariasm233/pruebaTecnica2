@@ -1,7 +1,6 @@
 package co.com.ecommerce.adapters.entities;
 
 import co.com.ecommerce.model.Brand;
-import co.com.ecommerce.model.Prices;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;

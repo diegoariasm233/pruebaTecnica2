@@ -1,8 +1,8 @@
 package co.com.ecommerce.service;
 
-import co.com.ecommerce.external.PricesAdapterInterface;
+import co.com.ecommerce.external.PriceAdapterInterface;
 import co.com.ecommerce.model.Brand;
-import co.com.ecommerce.model.Prices;
+import co.com.ecommerce.model.Price;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,10 +23,10 @@ import static org.mockito.Mockito.verify;
 class ProductPriceServiceTest {
 
     @Mock
-    private PricesAdapterInterface pricesAdapterInterface;
+    private PriceAdapterInterface priceAdapterInterface;
 
     @InjectMocks
-    private ProductPriceService priceUseCase;
+    private ProductPriceService priceService;
 
     @BeforeEach
     void setUp() {
@@ -40,23 +40,25 @@ class ProductPriceServiceTest {
         Long brandId = 2L;
 
         Brand brand = new Brand(1L, "ARTURO CALLE");
-        Prices prices = new Prices(1L, brand, applicationDate.minusDays(1), applicationDate.plusDays(1),
+        Price price = new Price(1L, brand, applicationDate.minusDays(1), applicationDate.plusDays(1),
                 1, productId, 1, BigDecimal.valueOf(100.0), "EUR");
+        Price price2 = new Price(2L, brand, applicationDate.minusDays(1), applicationDate.plusDays(1),
+                2, productId, 0, BigDecimal.valueOf(80.0), "EUR");
 
-        when(pricesAdapterInterface.findPriceByProductIdAndBrandId(productId, brandId))
-                .thenReturn(List.of(prices));
+        when(priceAdapterInterface.findPriceByProductIdAndBrandIdAndApplicationDate(applicationDate, productId, brandId))
+                .thenReturn(List.of(price, price2));
 
-        Optional<Prices> result = priceUseCase.getPriceForProduct(applicationDate, productId, brandId);
+        Optional<Price> result = priceService.getPriceForProduct(applicationDate, productId, brandId);
 
         assertTrue(result.isPresent());
-        Prices response = result.get();
-        assertEquals(prices.getProductId(), response.getProductId());
-        assertEquals(prices.getBrand().getBrandId(), response.getBrand().getBrandId());
-        assertEquals(prices.getPriceList(), response.getPriceList());
-        assertEquals(prices.getPrice(), response.getPrice());
-        assertEquals(prices.getStartDate(), response.getStartDate());
-        assertEquals(prices.getEndDate(), response.getEndDate());
-        verify(pricesAdapterInterface).findPriceByProductIdAndBrandId(productId, brandId);
+        Price response = result.get();
+        assertEquals(price.getProductId(), response.getProductId());
+        assertEquals(price.getBrand().getBrandId(), response.getBrand().getBrandId());
+        assertEquals(price.getPriceList(), response.getPriceList());
+        assertEquals(price.getPrice(), response.getPrice());
+        assertEquals(price.getStartDate(), response.getStartDate());
+        assertEquals(price.getEndDate(), response.getEndDate());
+        verify(priceAdapterInterface).findPriceByProductIdAndBrandIdAndApplicationDate(applicationDate, productId, brandId);
     }
 
     @Test
@@ -65,12 +67,12 @@ class ProductPriceServiceTest {
         Long productId = 1L;
         Long brandId = 2L;
 
-        when(pricesAdapterInterface.findPriceByProductIdAndBrandId(productId, brandId))
+        when(priceAdapterInterface.findPriceByProductIdAndBrandIdAndApplicationDate(applicationDate, productId, brandId))
                 .thenReturn(List.of());
 
-        Optional<Prices> result = priceUseCase.getPriceForProduct(applicationDate, productId, brandId);
+        Optional<Price> result = priceService.getPriceForProduct(applicationDate, productId, brandId);
 
         assertFalse(result.isPresent());
-        verify(pricesAdapterInterface).findPriceByProductIdAndBrandId(productId, brandId);
+        verify(priceAdapterInterface).findPriceByProductIdAndBrandIdAndApplicationDate(applicationDate, productId, brandId);
     }
 }
